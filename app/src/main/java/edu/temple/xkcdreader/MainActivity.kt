@@ -1,7 +1,11 @@
 package edu.temple.xkcdreader
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -39,6 +43,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        intent.action?.run {
+            if (this == Intent.ACTION_VIEW){
+                intent.data?.let {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        // TODO fetchComic(it.path.)
+                    }
+
+                }
+            }
+
+            findViewById<Button>(R.id.request).setOnClickListener{
+                val intent = Intent(ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
+                    Uri.parse("package:${packageName}"))
+                startActivity(intent)
+            }
+        }
+
+
+        // ATTENTION: This was auto-generated to handle app links.
+        val appLinkIntent: Intent = intent
+        val appLinkAction: String? = appLinkIntent.action
+        val appLinkData: Uri? = appLinkIntent.data
     }
 
     suspend fun fetchComic(comicId: String) {
